@@ -1,18 +1,14 @@
-// #[cfg(feature = "simd")]
-// use std::simd::{
-//   prelude::*,
-//   LaneCount,
-//   SimdElement,
-//   SupportedLaneCount,
-// };
-
 //\ declare \//
 
 pub (crate) struct MetricCosine;
 pub (crate) struct MetricInnerProduct;
 pub (crate) struct MetricL2Norm;
 
+/// A trait that provides a function
+/// to `compute` the distance between two buffers
 pub trait Metric<T> {
+  /// Compute the distance between two buffers
+  /// using the `Metric`
   fn compute(&self, v0: &[T], v1: &[T]) -> f32
   where
     T: Copy + Into<f32>;
@@ -25,7 +21,7 @@ impl<T> Metric<T> for MetricCosine {
   where
     T: Copy + Into<f32>,
   {
-    _impl_metricCosineCompute(v0, v1)   
+    _MetricCosine_compute(v0, v1)   
   }
 }
 
@@ -34,7 +30,7 @@ impl<T> Metric<T> for MetricInnerProduct {
   where
     T: Copy + Into<f32>,
   {
-    _impl_metricInnerProductCompute(v0, v1)
+    _MetricInnerProduct_compute(v0, v1)
   }
 }
 
@@ -43,23 +39,25 @@ impl<T> Metric<T> for MetricL2Norm {
   where
     T: Copy + Into<f32>,
   {
-    _impl_metricL2NormCompute(v0, v1)
+    _MetricL2Norm_compute(v0, v1)
   }
 }
 
-fn _impl_metricCosineCompute<T>(
+#[inline]
+pub (crate) fn _MetricCosine_compute<T>(
   v0: &[T],
   v1: &[T],
 ) -> f32
 where
   T: Copy + Into<f32>,
 {
-  _impl_metricInnerProductCompute(v0, v1) /
-  _impl_metricInnerProductCompute(v0, v0).sqrt() /
-  _impl_metricInnerProductCompute(v1, v1).sqrt()
+  _MetricInnerProduct_compute(v0, v1) /
+  _MetricInnerProduct_compute(v0, v0).sqrt() /
+  _MetricInnerProduct_compute(v1, v1).sqrt()
 }
 
-fn _impl_metricInnerProductCompute<T>(
+#[inline]
+pub (crate) fn _MetricInnerProduct_compute<T>(
   v0: &[T],
   v1: &[T],
 ) -> f32
@@ -74,7 +72,8 @@ where
     })
 }
 
-fn _impl_metricL2NormCompute<T>(
+#[inline]
+pub (crate) fn _MetricL2Norm_compute<T>(
   v0: &[T],
   v1: &[T],
 ) -> f32
