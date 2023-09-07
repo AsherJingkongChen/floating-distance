@@ -1,0 +1,20 @@
+[package]
+name = "distance"
+version = "0.1.0"
+authors = ["Asher Jingkong Chen"]
+description = "Compute vector distance in rust"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/AsherJingkongChen/distance.git"
+rust-version = "1.72.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+simd = []
+
+[dependencies]
+speedy = "0.8.6"
+
+[profile.release]
+lto = true
