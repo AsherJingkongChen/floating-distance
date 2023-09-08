@@ -1,20 +1,18 @@
 [package]
-name = "distance"
+name = "floating-distance"
 version = "0.1.0"
 authors = ["Asher Jingkong Chen"]
-description = "Compute vector distance in rust"
+description = "Compute distance between floating-point vectors in rust"
 edition = "2021"
 license = "MIT"
+readme = "README.md"
 repository = "https://github.com/AsherJingkongChen/distance.git"
-rust-version = "1.72.0"
+rust-version = "1.56.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
 simd = []
-
-[dependencies]
-speedy = "0.8.6"
 
 [profile.release]
 lto = true

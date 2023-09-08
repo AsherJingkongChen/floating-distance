@@ -1,27 +1,27 @@
-pub use speedy::{Readable, Writable};
 use crate::*;
 
-/// Specify the metric space for distance computations
-#[derive(
-  Debug, Eq, PartialEq,
-  Readable, Writable,
-)]
+/// Metric space
 pub enum Space {
+  /// Cosine space
   Cosine,
+
+  /// Inner product space (Dot product)
   InnerProduct,
-  L2Norm,
+
+  /// L2 space (Euclidean distance)
+  L2,
 }
 
 impl Space {
   /// Create the corresponding `Metric` by `Space`
   pub fn metric<T>(&self) -> Box<dyn Metric<T>>
   where
-    T: Copy + Into<f32>,
+    T: Float,
   {
     match self {
       Space::Cosine => Box::from(MetricCosine),
       Space::InnerProduct => Box::from(MetricInnerProduct),
-      Space::L2Norm => Box::from(MetricL2Norm),
+      Space::L2 => Box::from(MetricL2),
     }
   }
 }

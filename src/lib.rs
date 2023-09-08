@@ -1,12 +1,17 @@
-#![cfg_attr(feature = "simd", feature(portable_simd, array_chunks))]
+#![doc = include_str!("../README.md")]
+
 #![allow(non_snake_case)]
+#![warn(missing_docs)]
 
-//\ declare \//
+/// Floating-point numeric types
+pub mod float;
 
+/// Functions to compute distance
 pub mod metric;
+
+/// Specify the metric space of distance computations
 pub mod space;
 
-//\ export \//
-
+pub use crate::float::*;
 pub use crate::metric::*;
 pub use crate::space::*;
