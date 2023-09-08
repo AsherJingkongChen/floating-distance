@@ -33,5 +33,5 @@ pub fn cosine_similarity() {
     }
   }
 
-  println!("{:?}", result);
+  println!("(score, i, j) = {:?}", result);
 }

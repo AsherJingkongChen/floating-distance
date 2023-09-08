@@ -2,7 +2,7 @@
 name = "floating-distance"
 version = "0.1.0"
 authors = ["Asher Jingkong Chen"]
-description = "Compute distance between floating-point vectors in rust"
+description = "Compute distance between floating-point vectors in Rust"
 edition = "2021"
 license = "MIT"
 readme = "README.md"

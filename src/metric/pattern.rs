@@ -15,6 +15,7 @@ pub trait MetricPattern {
   /// let space = Space::Cosine;
   /// let distance = v0.distance(v1, space);
   /// let expectation: f64 = 14.0 / (4.0 * 4.0);
+  /// 
   /// assert_eq!(distance, expectation);
   /// ```
   fn distance(&self, rhs: &Self, space: Space) -> BigFloat;
