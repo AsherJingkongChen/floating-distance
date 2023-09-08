@@ -50,9 +50,12 @@ pub (crate) fn _MetricCosine_compute<T>(
 where
   T: Float,
 {
-  _MetricInnerProduct_compute(v0, v1) /
-  _MetricInnerProduct_compute(v0, v0).sqrt() /
-  _MetricInnerProduct_compute(v1, v1).sqrt()
+  let dot_01 = _MetricInnerProduct_compute(v0, v1);
+  let norm_1 = _MetricInnerProduct_compute(v0, v0).sqrt();
+  let norm_2 = _MetricInnerProduct_compute(v1, v1).sqrt();
+  return
+    if dot_01 == 0.0 { 0.0 }
+    else { (dot_01 / norm_1 / norm_2).clamp(-1.0, 1.0) }
 }
 
 #[inline]

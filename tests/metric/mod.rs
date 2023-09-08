@@ -91,3 +91,27 @@ fn MetricPattern_distance_using_vec() {
   assert_eq!(results, expectations);
   assert_eq!(results, result_aliases);
 }
+
+
+#[test]
+fn Metric_compute_handle_zeros() {
+  let zeros: &[f32] = &[0.0; 144];
+  let ones: &[f32] = &[1.0; 144];
+  let expectations: &[f64] = &[
+    0.0, 0.0, 0.0,
+    0.0, 0.0, 144.0,
+    1.0, 144.0, 0.0,
+  ];
+  let results = &[
+    zeros.distance(zeros, Space::Cosine),
+    zeros.distance(zeros, Space::InnerProduct),
+    zeros.distance(zeros, Space::L2),
+    zeros.distance(ones, Space::Cosine),
+    zeros.distance(ones, Space::InnerProduct),
+    zeros.distance(ones, Space::L2),
+    ones.distance(ones, Space::Cosine),
+    ones.distance(ones, Space::InnerProduct),
+    ones.distance(ones, Space::L2),
+  ];
+  assert_eq!(results, expectations);
+}
