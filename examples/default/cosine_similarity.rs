@@ -2,7 +2,7 @@ use floating_distance::*;
 use rand::{prelude::*, distributions::*};
 
 pub fn cosine_similarity() {
-  let count = 99;
+  let count = 100;
   let mut rng = thread_rng();
   rng.fill_bytes(&mut [0]);
   // let dist = Uniform::new_inclusive(-1.0_f32, 1.0_f32);

@@ -1,31 +1,7 @@
 use floating_distance::*;
 
 #[test]
-fn Metric_compute() {
-  let v0: &[f32] = &[1.0, 2.0, 3.0, 2.0, 1.0];
-  let v1: &[f32] = &[2.0, 1.0, 1.0, 2.0, 3.0];
-  let metrics = [
-    Space::Cosine.metric::<f32>(),
-    Space::InnerProduct.metric::<f32>(),
-    Space::L2.metric::<f32>(),
-  ];
-  let expectations = &[
-    (2 + 2 + 3 + 4 + 3) as f64 /
-    ((1 + 4 + 9 + 4 + 1) as f64).sqrt() /
-    ((4 + 1 + 1 + 4 + 9) as f64).sqrt(),
-    (2 + 2 + 3 + 4 + 3) as f64,
-    (1 + 1 + 4 + 0 + 4) as f64,
-  ];
-  let results =
-    &*metrics
-      .iter()
-      .map(|m| m.compute(v0, v1))
-      .collect::<Box<[_]>>();
-  assert_eq!(results, expectations);
-}
-
-#[test]
-fn MetricPattern_distance_using_slice() {
+fn DistancePattern_distance_using_slice() {
   let v0: &[f32] = &[1.0, 2.0, 3.0, 2.0, 1.0];
   let v1: &[f32] = &[2.0, 1.0, 1.0, 2.0, 3.0];
   let expectations = &[
@@ -37,9 +13,9 @@ fn MetricPattern_distance_using_slice() {
   ];
   {
     let results = &[
-      v0.distance(v1, Space::Cosine),
-      v0.distance(v1, Space::InnerProduct),
-      v0.distance(v1, Space::L2),
+      v0.distance(v1, Metric::Cosine),
+      v0.distance(v1, Metric::InnerProduct),
+      v0.distance(v1, Metric::L2),
     ];
     let result_aliases = &[
       v0.distance_cosine(v1),
@@ -53,9 +29,9 @@ fn MetricPattern_distance_using_slice() {
     let v0 = Box::<[f32]>::from(v0);
     let v1 = Box::<[f32]>::from(v1);
     let results = &[
-      v0.distance(&v1, Space::Cosine),
-      v0.distance(&v1, Space::InnerProduct),
-      v0.distance(&v1, Space::L2),
+      v0.distance(&v1, Metric::Cosine),
+      v0.distance(&v1, Metric::InnerProduct),
+      v0.distance(&v1, Metric::L2),
     ];
     let result_aliases = &[
       v0.distance_cosine(&v1),
@@ -68,7 +44,7 @@ fn MetricPattern_distance_using_slice() {
 }
 
 #[test]
-fn MetricPattern_distance_using_vec() {
+fn DistancePattern_distance_using_vec() {
   let v0: Vec<f32> = vec![2.0, 1.0, 3.0, 2.0, 3.0];
   let v1: Vec<f32> = vec![1.0, 2.0, 1.0, 2.0, 1.0];
   let expectations = &[
@@ -79,9 +55,9 @@ fn MetricPattern_distance_using_vec() {
     (1 + 1 + 4 + 0 + 4) as f64,
   ];
   let results = &[
-    v0.distance(&v1, Space::Cosine),
-    v0.distance(&v1, Space::InnerProduct),
-    v0.distance(&v1, Space::L2),
+    v0.distance(&v1, Metric::Cosine),
+    v0.distance(&v1, Metric::InnerProduct),
+    v0.distance(&v1, Metric::L2),
   ];
   let result_aliases = &[
     v0.distance_cosine(&v1),
@@ -94,7 +70,7 @@ fn MetricPattern_distance_using_vec() {
 
 
 #[test]
-fn Metric_compute_handle_zeros() {
+fn DistancePattern_distance_handle_zeros() {
   let zeros: &[f32] = &[0.0; 144];
   let ones: &[f32] = &[1.0; 144];
   let expectations: &[f64] = &[
@@ -103,15 +79,15 @@ fn Metric_compute_handle_zeros() {
     1.0, 144.0, 0.0,
   ];
   let results = &[
-    zeros.distance(zeros, Space::Cosine),
-    zeros.distance(zeros, Space::InnerProduct),
-    zeros.distance(zeros, Space::L2),
-    zeros.distance(ones, Space::Cosine),
-    zeros.distance(ones, Space::InnerProduct),
-    zeros.distance(ones, Space::L2),
-    ones.distance(ones, Space::Cosine),
-    ones.distance(ones, Space::InnerProduct),
-    ones.distance(ones, Space::L2),
+    zeros.distance(zeros, Metric::Cosine),
+    zeros.distance(zeros, Metric::InnerProduct),
+    zeros.distance(zeros, Metric::L2),
+    zeros.distance(ones, Metric::Cosine),
+    zeros.distance(ones, Metric::InnerProduct),
+    zeros.distance(ones, Metric::L2),
+    ones.distance(ones, Metric::Cosine),
+    ones.distance(ones, Metric::InnerProduct),
+    ones.distance(ones, Metric::L2),
   ];
   assert_eq!(results, expectations);
 }

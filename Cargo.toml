@@ -13,7 +13,7 @@ rust-version = "1.56.0"
 maintenance = { status = "actively-developed" }
 
 [features]
-simd = []
+# simd = []
 
 [profile.release]
 lto = true

@@ -6,12 +6,12 @@
 /// Floating-point numeric types
 pub mod float;
 
-/// Functions to compute distance
+/// Distance computations
+pub mod distance;
+
+/// Specify the algorithms of distance computations
 pub mod metric;
 
-/// Specify the metric space of distance computations
-pub mod space;
-
 pub use crate::float::*;
+pub use crate::distance::*;
 pub use crate::metric::*;
-pub use crate::space::*;
