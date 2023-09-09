@@ -16,6 +16,8 @@ pub trait DistancePattern {
   /// let result = v0.distance(v1, metric);
   /// let expectation: f64 = 14.0 / (4.0 * 4.0);
   /// 
+  /// assert_eq!(result, expectation);
+  /// 
   /// let v0: [f64; 2] = [3.0, 10.0];
   /// let v1: [f64; 2] = [-4.0, 3.0];
   /// let metric = Metric::L2;
