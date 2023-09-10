@@ -1,4 +1,4 @@
-name: Rust
+name: Main
 
 on:
   push:
@@ -8,17 +8,27 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  CARGO_NET_GIT_FETCH_WITH_CLI: true
 
 jobs:
-  build:
+  main:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Build with the default feature
-      run: cargo build --release
-    - name: Run tests
-      run: cargo test
+    - name: Install Rust toolchain v1.60.0
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: 1.60.0
+        override: true
+    - name: Install cargo-llvm-cov
+      uses: taiki-e/install-action@cargo-llvm-cov
+    - name: Check for release
+      run: cargo check --release
+    - name: Run tests and generate coverage reports
+      run: cargo llvm-cov --lcov --output-path llvm-cov.info
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: llvm-cov.info
+        fail_ci_if_error: true

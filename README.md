@@ -1,5 +1,7 @@
 # Compute distance between floating-point vectors in rust
 [<img alt="crates.io" src="https://img.shields.io/crates/v/floating-distance.svg?color=fe7d37&logo=rust" height="20">](https://crates.io/crates/floating-distance)
+[<img alt="coverage" src="https://img.shields.io/codecov/c/github/AsherJingkongChen/floating-distance?logo=codecov" height="20">](https://app.codecov.io/gh/AsherJingkongChen/floating-distance)
+[<img alt="GitHub actions" src="https://github.com/AsherJingkongChen/floating-distance/actions/workflows/main.yml/badge.svg" height="20">](https://github.com/AsherJingkongChen/floating-distance/actions/workflows/main.yml)
 
 ## Documentations
 [Docs.rs](https://docs.rs/floating-distance)

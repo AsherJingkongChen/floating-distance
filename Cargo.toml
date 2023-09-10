@@ -7,7 +7,8 @@ edition = "2021"
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/AsherJingkongChen/distance.git"
-rust-version = "1.56.0"
+documentation = "https://docs.rs/floating-distance"
+rust-version = "1.60.0"
 
 [badges]
 maintenance = { status = "actively-developed" }
