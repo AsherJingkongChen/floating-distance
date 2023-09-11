@@ -14,10 +14,13 @@ rust-version = "1.60.0"
 maintenance = { status = "actively-developed" }
 
 [features]
-# simd = []
+simd = []
 
 [profile.release]
 lto = true
+
+[dependencies]
+num-traits = "0.2.16"
 
 [dev-dependencies]
 rand = "0.8.5"

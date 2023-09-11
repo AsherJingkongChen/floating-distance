@@ -15,7 +15,7 @@ fn main() {
   let v1: &[f32] = &[2.0, 1.0, 1.0, 1.0, 2.0, 1.0, 2.0];
   let metric = Metric::Cosine;
   let result = v0.distance(v1, metric);
-  let expectation: f64 = 14.0 / (4.0 * 4.0);
+  let expectation: f32 = 14.0 / (4.0 * 4.0);
 
   assert_eq!(result, expectation);
 }

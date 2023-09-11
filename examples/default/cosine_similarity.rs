@@ -14,13 +14,13 @@ pub fn cosine_similarity() {
     vectors.push(
       dist
         .sample_iter(&mut rng)
-        .take(768)
+        .take(384)
         .map(|v| if v { 1.0 } else { 0.0 })
         .collect::<Vec<f32>>()
     );
   }
 
-  let mut result = (-1_f64, 0, 0);
+  let mut result = (-1_f32, 0, 0);
   for i in 0..count {
     for j in i..count {
       if i == j { continue; }
