@@ -1,12 +1,8 @@
 use crate::*;
-use num_traits::Float;
 
 /// A trait that provides functions
 /// to compute `distance` between two vectors
-pub trait DistancePattern<T>
-where
-  T: Float,
-{
+pub trait DistancePattern<T> {
   /// Compute distance between two vectors
   /// using the `metric`
   /// 
@@ -59,7 +55,9 @@ where
 
 impl<T> DistancePattern<T> for [T]
 where
-  T: Float,
+  T: FloatingPoint,
+  AutoSimd!(T): FloatingPoints<T>,
+  AutoLaneCount!(T): SupportedLaneCount,
 {
   fn distance(&self, other: &Self, metric: Metric) -> T {
     _distance(self, other, metric)
@@ -80,7 +78,9 @@ where
 
 impl<T> DistancePattern<T> for Box<[T]>
 where
-  T: Float,
+  T: FloatingPoint,
+  AutoSimd!(T): FloatingPoints<T>,
+  AutoLaneCount!(T): SupportedLaneCount,
 {
   fn distance(&self, other: &Self, metric: Metric) -> T {
     _distance(self, other, metric)
@@ -101,7 +101,9 @@ where
 
 impl<T> DistancePattern<T> for Vec<T>
 where
-  T: Float,
+  T: FloatingPoint,
+  AutoSimd!(T): FloatingPoints<T>,
+  AutoLaneCount!(T): SupportedLaneCount,
 {
   fn distance(&self, other: &Self, metric: Metric) -> T {
     _distance(self, other, metric)
@@ -122,7 +124,9 @@ where
 
 fn _distance<T>(v0: &[T], v1: &[T], metric: Metric) -> T
 where
-  T: Float,
+  T: FloatingPoint,
+  AutoSimd!(T): FloatingPoints<T>,
+  AutoLaneCount!(T): SupportedLaneCount,
 {
   match metric {
     Metric::Cosine => _cosine(v0, v1),
