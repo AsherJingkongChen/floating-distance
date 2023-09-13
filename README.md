@@ -103,4 +103,4 @@ You can also benchmark it by repeating the following steps:
 
 ### Feature note
 1. This feature is built by experimental features of Rust
-2. If a program is built with target features that are not supported by the target architecture, it may lead to runtime errors.
+2. If a program is built with target features which are not supported by the target architecture, it may lead to runtime errors.
