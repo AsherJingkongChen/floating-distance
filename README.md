@@ -74,12 +74,12 @@ Unit width | Target features
 I have run a simple benchmark on my laptop.
 Let's check out the results first!
 
-SIMD 256-bits vs No SIMD, uses `RUSTFLAGS="-C target-feature=+avx"`:
+- SIMD 256-bits vs No SIMD, uses `RUSTFLAGS="-C target-feature=+avx"`:
 ```log
 no_simd: 265,312 ns/iter (+/- 65,921)
 simd:    37,681  ns/iter (+/- 11,822)
 ```
-SIMD 128-bits vs No SIMD, uses `RUSTFLAGS="-C target-feature=+ssse3"`:
+- SIMD 128-bits vs No SIMD, uses `RUSTFLAGS="-C target-feature=+ssse3"`:
 ```log
 no_simd: 267,294 ns/iter (+/- 70,412)
 simd:    67,950  ns/iter (+/- 11,427)
@@ -103,4 +103,4 @@ You can also benchmark it by repeating the following steps:
 
 ### Feature note
 1. This feature is built by experimental features of Rust
-2. Executing the program built with target features that are not supported by the target architecture may cause runtime errors
+2. If a program is built with target features which are not supported by the target architecture, it may lead to runtime errors.
