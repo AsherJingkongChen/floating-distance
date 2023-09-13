@@ -51,12 +51,12 @@ floating-distance = { version = "*", features = ["simd"] }
 [toolchain]
 channel = "nightly"
 ```
-3. Choose the SIMD instruction sets which are supported by the target architecture. You can use `RUSTFLAGS` environment variable like these:
+3. Choose the SIMD instruction sets which are supported by the target architecture. You can use `RUSTFLAGS` environment variable and `-C target-feature` compiler option like these:
 ```shell
 RUSTFLAGS="-C target-feature=+sse4.1" cargo build
 ```
 ```shell
-RUSTFLAGS="-C target-feature=+avx2" cargo build --release
+RUSTFLAGS="-C target-feature=+avx,+sse3" cargo build --release
 ```
 You can find all target features of Rust by this:
 ```shell
@@ -64,7 +64,7 @@ rustc --print target-features
 ```
 The table shows how this library interprets target features:
 
-Data width | Target features
+Unit width | Target features
 --- | ---
 128-bits | `sse`, `sse2`, `sse3`, `sse4.1`, `sse4.2`, `sse4a`, `ssse3`
 256-bits | `avx`, `avx2`
@@ -74,4 +74,5 @@ Data width | Target features
 *TODO*
 
 ### Note
-This feature is built by experimental features of Rust
+1. This feature is built by experimental features of Rust
+2. Executing the program built with target features that are not supported by the target architecture may cause runtime errors

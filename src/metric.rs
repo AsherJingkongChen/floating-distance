@@ -25,10 +25,10 @@ macro_rules! metric_iterative_impl {
       AutoSimd!(T): FloatingPoints<T>,
       AutoLaneCount!(T): SupportedLaneCount,
     {
+      let scalar_map_fn: fn(T, (T, T)) -> T = $map_fn;
       cfg_if! {
       if #[cfg(feature = "simd")] {
         type P<T> = AutoSimd!(T);
-        let scalar_map_fn: fn(T, (T, T)) -> T = $map_fn;
         let packed_map_fn: fn(P<T>, (P<T>, P<T>)) -> P<T> = $map_fn;
         if let Some(last_chunk) =
           zip(

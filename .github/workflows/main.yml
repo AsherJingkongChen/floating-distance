@@ -25,13 +25,16 @@ jobs:
     - name: Install cargo-llvm-cov
       uses: taiki-e/install-action@cargo-llvm-cov
 
-    - name: Check compilation
+    - name: Check compilation (--no-default-features)
+      run: cargo check --no-default-features
+
+    - name: Check compilation (--all-features)
       run: cargo check --all-features
 
     - name: Run tests (--no-default-features)
       run: cargo test --no-default-features
 
-    - name: Run tests (cargo-llvm-cov)
+    - name: Run tests (cargo-llvm-cov, --all-features)
       run: cargo llvm-cov --all-features --lcov --output-path llvm-cov.info
 
     - name: Upload coverage reports to Codecov

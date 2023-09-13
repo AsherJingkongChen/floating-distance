@@ -29,11 +29,12 @@ if #[cfg(any(
     ($T: ty) => { 128 / 8 / size_of::<$T>() }
   }
 } else {
-  #[deprecated(
-    note = "The target architecture probably does not support SIMD"
-  )]
+  compile_error!("\
+The target architecture does not support SIMD. \
+You can check out the documentation of \
+the floating-distance crate for more information.");
   macro_rules! auto_lane_count {
-    ($T: ty) => { 128 / 8 / size_of::<$T>() }
+    ($T: ty) => { size_of::<$T>() / size_of::<$T>() }
   }
 }}
 
