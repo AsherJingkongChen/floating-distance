@@ -24,7 +24,7 @@ pub fn cosine_similarity() {
   for i in 0..count {
     for j in i..count {
       if i == j { continue; }
-      let distance = vectors[i].distance_cosine(&vectors[j]);
+      let distance = vectors[i].distance(&vectors[j], Metric::Cosine);
 
       // find the one closest to 1.0
       if result.0 < distance {

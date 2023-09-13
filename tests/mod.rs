@@ -1,3 +1,8 @@
 #![allow(non_snake_case)]
 
-mod distance;
+mod metric;
+
+#[cfg(feature = "simd")]
+mod simd;
+
+mod vector;

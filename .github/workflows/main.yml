@@ -15,17 +15,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
     - name: Install Rust toolchain v1.60.0
       uses: actions-rs/toolchain@v1
       with:
         toolchain: 1.60.0
         override: true
+
     - name: Install cargo-llvm-cov
       uses: taiki-e/install-action@cargo-llvm-cov
-    - name: Check for release
-      run: cargo check --release
-    - name: Run tests and generate coverage reports
-      run: cargo llvm-cov --lcov --output-path llvm-cov.info
+
+    - name: Check compilation
+      run: cargo check --all-features
+
+    - name: Run tests (--no-default-features)
+      run: cargo test --no-default-features
+
+    - name: Run tests (cargo-llvm-cov)
+      run: cargo llvm-cov --all-features --lcov --output-path llvm-cov.info
+
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
       with:
