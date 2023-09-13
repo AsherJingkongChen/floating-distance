@@ -1,0 +1,3 @@
+[build]
+rustdocflags = "--cfg docsrs"
+rustflags = "-C target-feature=+avx"

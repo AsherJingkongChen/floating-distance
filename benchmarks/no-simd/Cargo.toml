@@ -1,0 +1,11 @@
+[package]
+name = "benchmarks-no-simd"
+version = "0.2.0"
+
+[[bench]]
+name = "no-simd"
+path = "bench.rs"
+
+[dev-dependencies.utils-benchmarks]
+path = "../../utils/benchmarks/"
+features = []
