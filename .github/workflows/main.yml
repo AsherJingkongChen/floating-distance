@@ -20,26 +20,42 @@ jobs:
       uses: actions-rs/toolchain@v1
       with:
         toolchain: 1.60.0
-        override: true
+
+    - name: Install Rust toolchain nightly
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: nightly
 
     - name: Install cargo-llvm-cov
       uses: taiki-e/install-action@cargo-llvm-cov
 
-    - name: Check compilation (--no-default-features)
-      run: cargo check --no-default-features
+    - name: Check compilation
+      run: cargo +1.60.0 check
 
-    - name: Check compilation (--all-features)
-      run: cargo check --all-features
+    - name: Check compilation (--features=simd)
+      run: cargo +nightly check --features=simd
 
-    - name: Run tests (--no-default-features)
-      run: cargo test --no-default-features
+    - name: Run doc-tests
+      run: cargo +nightly test --doc
 
-    - name: Run tests (cargo-llvm-cov, --all-features)
-      run: cargo llvm-cov --all-features --lcov --output-path llvm-cov.info
+    - name: Run doc-tests (--features=simd)
+      run: cargo +nightly test --doc --features=simd
 
-    - name: Upload coverage reports to Codecov
+    - name: Run examples (default)
+      run: cargo +1.60.0 run --example default
+
+    - name: Run tests
+      run: cargo +1.60.0 llvm-cov --lcov --output-path llvm-cov-default.info
+
+    - name: Run tests (--features=simd)
+      run: cargo +nightly llvm-cov --features=simd --lcov --output-path llvm-cov-simd.info
+
+    - name: Upload all coverage reports to Codecov
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        files: llvm-cov.info
+        files: >
+          llvm-cov-default.info,
+          llvm-cov-simd.info
         fail_ci_if_error: true
+        verbose: true

@@ -1,0 +1,15 @@
+[package]
+name = "utils-benchmarks"
+version = "0.2.0"
+
+[dependencies]
+floating-distance = { path = "../../" }
+rand = "0.8.5"
+
+[features]
+simd = ["floating-distance/simd"]
+
+[lib]
+path = "lib.rs"
+doctest = false
+test = false

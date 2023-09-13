@@ -1,6 +1,6 @@
 [package]
 name = "floating-distance"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Asher Jingkong Chen"]
 categories = ["algorithms", "mathematics"]
 description = "Measure distance between floating-point vectors in Rust"
@@ -16,9 +16,6 @@ rust-version = "1.60.0"
 [badges]
 maintenance = { status = "actively-developed" }
 
-[features]
-simd = []
-
 [dependencies]
 num-traits = "0.2.16"
 cfg-if = "1.0.0"
@@ -27,8 +24,14 @@ cfg-if = "1.0.0"
 rand = "0.8.5"
 approx = "0.5.1"
 
+[features]
+simd = []
+
+[lib]
+doctest = false
+
 [workspace]
 members = [
-  "benchmarks/no-simd",
-  "benchmarks/simd"
+  "benchmarks/**/*",
+  "utils/**/*",
 ]
