@@ -53,7 +53,7 @@ channel = "nightly"
 ```
 3. Choose the SIMD instruction sets which are supported by the target architecture. You can use `RUSTFLAGS` environment variable and `-C target-feature` compiler option like these:
 ```shell
-RUSTFLAGS="-C target-feature=+sse4.1" cargo build
+RUSTFLAGS="-C target-feature=+ssse3" cargo build
 ```
 ```shell
 RUSTFLAGS="-C target-feature=+avx,+sse3" cargo build --release
@@ -71,8 +71,36 @@ Unit width | Target features
 512-bits | `avx512vl`
 
 ### How great is it?
-*TODO*
+I have run a simple benchmark on my laptop.
+Let's check out the results first!
 
-### Note
+SIMD 256-bits vs No SIMD, uses `RUSTFLAGS="-C target-feature=+avx"`:
+```log
+no_simd: 265,312 ns/iter (+/- 65,921)
+simd:    37,681  ns/iter (+/- 11,822)
+```
+SIMD 128-bits vs No SIMD, uses `RUSTFLAGS="-C target-feature=+ssse3"`:
+```log
+no_simd: 267,294 ns/iter (+/- 70,412)
+simd:    67,950  ns/iter (+/- 11,427)
+```
+Unit type | Avarage time (ns/iter) | Rate (relative)
+--- | --- | ---
+Packed 256-bits | 37681 | 7.07
+Packed 128-bits | 67950 | 3.92
+Scalar 32-bits | 266303 | 1.00
+
+With the data above, we can see that SIMD can improve the performance by roughly `Unit width / Scalar width` times!
+
+You can also benchmark it by repeating the following steps:
+1. Clone the repository and change it to the current directory
+2. Check target features in `.cargo/config.toml`
+3. Run this command:
+```shell
+(cargo +nightly bench -p benchmarks-no-simd &&
+ cargo +nightly bench -p benchmarks-simd) 2> /dev/null
+```
+
+### Feature note
 1. This feature is built by experimental features of Rust
 2. Executing the program built with target features that are not supported by the target architecture may cause runtime errors
