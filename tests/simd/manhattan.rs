@@ -7,20 +7,20 @@ fn manhattan_exact_exact() {
     2 * MAX_LANE_COUNT_PER_INSTR,
     2 * MAX_LANE_COUNT_PER_INSTR,
   );
-  let v0: &[f32; LEN.0] = &[
+  let v0: &[f64; LEN.0] = &[
     3.0, 4.0, 1.0, 3.0, 1.0, 1.0, 4.0, 3.0,
     4.0, 1.0, 3.0, 1.0, 1.0, 4.0, 1.0, 4.0,
   ];
-  let v1: &[f32; LEN.1] = &[
+  let v1: &[f64; LEN.1] = &[
     3.0, 4.0, 1.0, 4.0, 3.0, 4.0, 4.0, 1.0,
     3.0, 1.0, 4.0, 1.0, 1.0, 1.0, 1.0, 1.0,
   ];
-  let expectation: f32 =
+  let expectation: f64 =
     0.0 + 0.0 + 0.0 + 1.0 +
     2.0 + 3.0 + 0.0 + 2.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
-    0.0 + 3.0 + 0.0 + 3.0_f32;
-  let result: f32 = v0.distance(v1, Metric::Manhattan);
+    0.0 + 3.0 + 0.0 + 3.0_f64;
+  let result: f64 = v0.distance(v1, Metric::Manhattan);
   assert_eq!(result, expectation);
 }
 
@@ -30,20 +30,20 @@ fn manhattan_exact_noexact() {
     2 * MAX_LANE_COUNT_PER_INSTR,
     2 * MAX_LANE_COUNT_PER_INSTR - 3,
   );
-  let v0: &[f32; LEN.0] = &[
+  let v0: &[f64; LEN.0] = &[
     3.0, 4.0, 1.0, 3.0, 1.0, 1.0, 4.0, 3.0,
     4.0, 1.0, 3.0, 1.0, 1.0, 4.0, 1.0, 4.0,
   ];
-  let v1: &[f32; LEN.1] = &[
+  let v1: &[f64; LEN.1] = &[
     3.0, 4.0, 1.0, 4.0, 3.0, 4.0, 4.0, 1.0,
     3.0, 1.0, 4.0, 1.0, 1.0,
   ];
-  let expectation: f32 =
+  let expectation: f64 =
     0.0 + 0.0 + 0.0 + 1.0 +
     2.0 + 3.0 + 0.0 + 2.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
-    0.0_f32;
-  let result: f32 = v0.distance(v1, Metric::Manhattan);
+    0.0_f64;
+  let result: f64 = v0.distance(v1, Metric::Manhattan);
   assert_eq!(result, expectation);
 }
 
@@ -53,20 +53,20 @@ fn manhattan_noexact_noexact_not_equal() {
     2 * MAX_LANE_COUNT_PER_INSTR - 1,
     2 * MAX_LANE_COUNT_PER_INSTR - 3,
   );
-  let v0: &[f32; LEN.0] = &[
+  let v0: &[f64; LEN.0] = &[
     3.0, 4.0, 1.0, 3.0, 1.0, 1.0, 4.0, 3.0,
     4.0, 1.0, 3.0, 1.0, 1.0, 4.0, 1.0,
   ];
-  let v1: &[f32; LEN.1] = &[
+  let v1: &[f64; LEN.1] = &[
     3.0, 4.0, 1.0, 4.0, 3.0, 4.0, 4.0, 1.0,
     3.0, 1.0, 4.0, 1.0, 1.0,
   ];
-  let expectation: f32 =
+  let expectation: f64 =
     0.0 + 0.0 + 0.0 + 1.0 +
     2.0 + 3.0 + 0.0 + 2.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
-    0.0_f32;
-  let result: f32 = v0.distance(v1, Metric::Manhattan);
+    0.0_f64;
+  let result: f64 = v0.distance(v1, Metric::Manhattan);
   assert_eq!(result, expectation);
 }
 
@@ -76,19 +76,19 @@ fn manhattan_noexact_noexact_is_equal() {
     2 * MAX_LANE_COUNT_PER_INSTR - 3,
     2 * MAX_LANE_COUNT_PER_INSTR - 3,
   );
-  let v0: &[f32; LEN.0] = &[
+  let v0: &[f64; LEN.0] = &[
     3.0, 4.0, 1.0, 3.0, 1.0, 1.0, 4.0, 3.0,
     4.0, 1.0, 3.0, 1.0, 1.0,
   ];
-  let v1: &[f32; LEN.1] = &[
+  let v1: &[f64; LEN.1] = &[
     3.0, 4.0, 1.0, 4.0, 3.0, 4.0, 4.0, 1.0,
     3.0, 1.0, 4.0, 1.0, 1.0,
   ];
-  let expectation: f32 =
+  let expectation: f64 =
     0.0 + 0.0 + 0.0 + 1.0 +
     2.0 + 3.0 + 0.0 + 2.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
-    0.0_f32;
-  let result: f32 = v0.distance(v1, Metric::Manhattan);
+    0.0_f64;
+  let result: f64 = v0.distance(v1, Metric::Manhattan);
   assert_eq!(result, expectation);
 }

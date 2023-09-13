@@ -2,16 +2,16 @@
 name = "floating-distance"
 version = "0.1.0"
 authors = ["Asher Jingkong Chen"]
+categories = ["algorithms", "mathematics"]
 description = "Measure distance between floating-point vectors in Rust"
+documentation = "https://docs.rs/floating-distance"
 edition = "2021"
+keywords = ["algorithm", "distance", "embedding", "simd", "vector"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/AsherJingkongChen/floating-distance.git"
-documentation = "https://docs.rs/floating-distance"
-rust-version = "1.60.0"
 resolver = "2"
-keywords = ["algorithm", "distance", "embedding", "simd", "vector"]
-categories = ["algorithms", "mathematics"]
+rust-version = "1.60.0"
 
 [badges]
 maintenance = { status = "actively-developed" }

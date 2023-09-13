@@ -17,6 +17,70 @@ pub enum Metric {
   Manhattan,
 }
 
+macro_rules! metric_iterative_impl {
+  ($metric: ident, $map_fn: expr) => {
+    pub (crate) fn $metric<T>(v0: &[T], v1: &[T]) -> T
+    where
+      T: FloatingPoint,
+      AutoSimd!(T): FloatingPoints<T>,
+      AutoLaneCount!(T): SupportedLaneCount,
+    {
+      cfg_if! {
+      if #[cfg(feature = "simd")] {
+        type P<T> = AutoSimd!(T);
+        let scalar_map_fn: fn(T, (T, T)) -> T = $map_fn;
+        let packed_map_fn: fn(P<T>, (P<T>, P<T>)) -> P<T> = $map_fn;
+        if let Some(last_chunk) =
+          zip(
+            v0.chunks(auto_lane_count!(T)),
+            v1.chunks(auto_lane_count!(T)),
+          ).rev().next()
+        {
+          let last_chunk_not_exact =
+            last_chunk.0.len() != last_chunk.1.len() ||
+            last_chunk.0.len() != auto_lane_count!(T);
+          let sum_of_not_exact_chunks =
+            if last_chunk_not_exact {
+              let items = zip(
+                last_chunk.0.iter(),
+                last_chunk.1.iter(),
+              );
+              items.fold(T::default(), |result, item| {
+                scalar_map_fn(result, (*item.0, *item.1))
+              })
+            } else {
+              T::default()
+            };
+
+          let exact_chunks = zip(
+            v0.chunks_exact(auto_lane_count!(T)),
+            v1.chunks_exact(auto_lane_count!(T)),
+          );
+          let sum_of_exact_chunks =
+            exact_chunks
+              .fold(P::<T>::default(), |result, chunk| {
+                packed_map_fn(result, (
+                  P::<T>::from_slice(chunk.0),
+                  P::<T>::from_slice(chunk.1),
+                ))
+              })
+              .reduce_sum();
+
+          sum_of_not_exact_chunks +
+          sum_of_exact_chunks
+        } else {
+          T::default()
+        }
+      } else {
+        let items = zip(v0.iter(), v1.iter());
+        items.fold(T::default(), |result, item| {
+          scalar_map_fn(result, (*item.0, *item.1))
+        })
+      }}
+    }
+  };
+}
+
 pub (crate) fn cosine<T>(v0: &[T], v1: &[T]) -> T
 where
   T: FloatingPoint,
@@ -45,185 +109,17 @@ where
   }
 }
 
-pub (crate) fn euclidean<T>(v0: &[T], v1: &[T]) -> T
-where
-  T: FloatingPoint,
-  AutoSimd!(T): FloatingPoints<T>,
-  AutoLaneCount!(T): SupportedLaneCount,
-{
-  cfg_if! {
-  if #[cfg(feature = "simd")] {
-    if let Some(last_chunk) =
-      zip(
-        v0.chunks(auto_lane_count!(T)),
-        v1.chunks(auto_lane_count!(T)),
-      ).rev().next()
-    {
-      let last_chunk_not_exact =
-        last_chunk.0.len() != last_chunk.1.len() ||
-        last_chunk.0.len() != auto_lane_count!(T);
-      let sum_of_not_exact_chunks =
-        if last_chunk_not_exact {
-          let items = zip(
-            last_chunk.0.iter(),
-            last_chunk.1.iter(),
-          );
-          items.fold(T::default(), |result, item| {
-            let diff = *item.0 - *item.1;
-            result + diff * diff
-          })
-        } else {
-          T::default()
-        };
+metric_iterative_impl!(euclidean, |result, item| {
+  let diff = item.0 - item.1;
+  result + diff * diff
+});
 
-      let exact_chunks = zip(
-        v0.chunks_exact(auto_lane_count!(T)),
-        v1.chunks_exact(auto_lane_count!(T)),
-      );
-      let sum_of_exact_chunks =
-        exact_chunks
-          .fold(<AutoSimd!(T)>::default(), |result, chunk| {
-            let chunk = (
-              <AutoSimd!(T)>::from_slice(chunk.0),
-              <AutoSimd!(T)>::from_slice(chunk.1),
-            );
-            let diff = chunk.0 - chunk.1;
-            result + diff * diff
-          })
-          .reduce_sum();
+metric_iterative_impl!(inner_product, |result, item| {
+  let dot = item.0 * item.1;
+  result + dot
+});
 
-      sum_of_not_exact_chunks +
-      sum_of_exact_chunks
-    } else {
-      T::default()
-    }
-  } else {
-    let items = zip(v0.iter(), v1.iter());
-    items.fold(T::default(), |result, item| {
-      let diff = *item.0 - *item.1;
-      result + diff * diff
-    })
-  }}
-}
-
-pub (crate) fn inner_product<T>(v0: &[T], v1: &[T]) -> T
-where
-  T: FloatingPoint,
-  AutoSimd!(T): FloatingPoints<T>,
-  AutoLaneCount!(T): SupportedLaneCount,
-{
-  cfg_if! {
-  if #[cfg(feature = "simd")] {
-    if let Some(last_chunk) =
-      zip(
-        v0.chunks(auto_lane_count!(T)),
-        v1.chunks(auto_lane_count!(T)),
-      ).rev().next()
-    {
-      let last_chunk_not_exact =
-        last_chunk.0.len() != last_chunk.1.len() ||
-        last_chunk.0.len() != auto_lane_count!(T);
-      let sum_of_not_exact_chunks =
-        if last_chunk_not_exact {
-          let items = zip(
-            last_chunk.0.iter(),
-            last_chunk.1.iter(),
-          );
-          items.fold(T::default(), |result, item| {
-            let dot = *item.0 * *item.1;
-            result + dot
-          })
-        } else {
-          T::default()
-        };
-
-      let exact_chunks = zip(
-        v0.chunks_exact(auto_lane_count!(T)),
-        v1.chunks_exact(auto_lane_count!(T)),
-      );
-      let sum_of_exact_chunks =
-        exact_chunks
-          .fold(<AutoSimd!(T)>::default(), |result, chunk| {
-            let chunk = (
-              <AutoSimd!(T)>::from_slice(chunk.0),
-              <AutoSimd!(T)>::from_slice(chunk.1),
-            );
-            let dot = chunk.0 * chunk.1;
-            result + dot
-          })
-          .reduce_sum();
-
-      sum_of_not_exact_chunks +
-      sum_of_exact_chunks
-    } else {
-      T::default()
-    }
-  } else {
-    let items = zip(v0.iter(), v1.iter());
-    items.fold(T::default(), |result, item| {
-      let dot = *item.0 * *item.1;
-      result + dot
-    })
-  }}
-}
-
-pub (crate) fn manhattan<T>(v0: &[T], v1: &[T]) -> T
-where
-  T: FloatingPoint,
-  AutoSimd!(T): FloatingPoints<T>,
-  AutoLaneCount!(T): SupportedLaneCount,
-{
-  cfg_if! {
-  if #[cfg(feature = "simd")] {
-    if let Some(last_chunk) =
-      zip(
-        v0.chunks(auto_lane_count!(T)),
-        v1.chunks(auto_lane_count!(T)),
-      ).rev().next()
-    {
-      let last_chunk_not_exact =
-        last_chunk.0.len() != last_chunk.1.len() ||
-        last_chunk.0.len() != auto_lane_count!(T);
-      let sum_of_not_exact_chunks =
-        if last_chunk_not_exact {
-          let items = zip(
-            last_chunk.0.iter(),
-            last_chunk.1.iter(),
-          );
-          items.fold(T::default(), |result, item| {
-            let diff_abs = (*item.0 - *item.1).abs();
-            result + diff_abs
-          })
-        } else {
-          T::default()
-        };
-
-      let exact_chunks = zip(
-        v0.chunks_exact(auto_lane_count!(T)),
-        v1.chunks_exact(auto_lane_count!(T)),
-      );
-      let sum_of_exact_chunks =
-        exact_chunks
-          .fold(<AutoSimd!(T)>::default(), |result, chunk| {
-            let chunk = (
-              <AutoSimd!(T)>::from_slice(chunk.0),
-              <AutoSimd!(T)>::from_slice(chunk.1),
-            );
-            let diff_abs = (chunk.0 - chunk.1).abs();
-            result + diff_abs
-          })
-          .reduce_sum();
-
-      sum_of_not_exact_chunks +
-      sum_of_exact_chunks
-    } else {
-      T::default()
-    }
-  } else {
-    let items = zip(v0.iter(), v1.iter());
-    items.fold(T::default(), |result, item| {
-      let diff_abs = (*item.0 - *item.1).abs();
-      result + diff_abs
-    })
-  }}
-}
+metric_iterative_impl!(manhattan, |result, item| {
+  let diff_abs = (item.0 - item.1).abs();
+  result + diff_abs
+});
