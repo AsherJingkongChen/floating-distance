@@ -20,7 +20,7 @@ fn inner_product_exact_exact() {
     3.0 + 4.0 + 16.0 + 3.0 +
     12.0 + 1.0 + 12.0 + 1.0 +
     1.0 + 4.0 + 1.0 + 4.0_f64;
-  let result: f64 = v0.distance(v1, Metric::InnerProduct);
+  let result: f64 = Metric::InnerProduct.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -43,7 +43,7 @@ fn inner_product_exact_noexact() {
     3.0 + 4.0 + 16.0 + 3.0 +
     12.0 + 1.0 + 12.0 + 1.0 +
     1.0_f64;
-  let result: f64 = v0.distance(v1, Metric::InnerProduct);
+  let result: f64 = Metric::InnerProduct.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -66,7 +66,7 @@ fn inner_product_noexact_noexact_not_equal() {
     3.0 + 4.0 + 16.0 + 3.0 +
     12.0 + 1.0 + 12.0 + 1.0 +
     1.0_f64;
-  let result: f64 = v0.distance(v1, Metric::InnerProduct);
+  let result: f64 = Metric::InnerProduct.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -89,6 +89,6 @@ fn inner_product_noexact_noexact_is_equal() {
     3.0 + 4.0 + 16.0 + 3.0 +
     12.0 + 1.0 + 12.0 + 1.0 +
     1.0_f64;
-  let result: f64 = v0.distance(v1, Metric::InnerProduct);
+  let result: f64 = Metric::InnerProduct.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }

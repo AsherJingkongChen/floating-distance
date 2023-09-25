@@ -31,7 +31,7 @@ fn cosine_exact_exact() {
     9.0 + 1.0 + 16.0 + 1.0 +
     1.0 + 1.0 + 1.0 + 1.0_f64
   ).sqrt();
-  let result: f64 = v0.distance(v1, Metric::Cosine);
+  let result: f64 = Metric::Cosine.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -65,7 +65,7 @@ fn cosine_exact_noexact() {
     9.0 + 1.0 + 16.0 + 1.0 +
     1.0_f64
   ).sqrt();
-  let result: f64 = v0.distance(v1, Metric::Cosine);
+  let result: f64 = Metric::Cosine.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -99,7 +99,7 @@ fn cosine_noexact_noexact_not_equal() {
     9.0 + 1.0 + 16.0 + 1.0 +
     1.0_f64
   ).sqrt();
-  let result: f64 = v0.distance(v1, Metric::Cosine);
+  let result: f64 = Metric::Cosine.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -133,6 +133,6 @@ fn cosine_noexact_noexact_is_equal() {
     9.0 + 1.0 + 16.0 + 1.0 +
     1.0_f64
   ).sqrt();
-  let result: f64 = v0.distance(v1, Metric::Cosine);
+  let result: f64 = Metric::Cosine.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }

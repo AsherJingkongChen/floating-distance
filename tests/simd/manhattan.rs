@@ -20,7 +20,7 @@ fn manhattan_exact_exact() {
     2.0 + 3.0 + 0.0 + 2.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
     0.0 + 3.0 + 0.0 + 3.0_f64;
-  let result: f64 = v0.distance(v1, Metric::Manhattan);
+  let result: f64 = Metric::Manhattan.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -43,7 +43,7 @@ fn manhattan_exact_noexact() {
     2.0 + 3.0 + 0.0 + 2.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
     0.0_f64;
-  let result: f64 = v0.distance(v1, Metric::Manhattan);
+  let result: f64 = Metric::Manhattan.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -66,7 +66,7 @@ fn manhattan_noexact_noexact_not_equal() {
     2.0 + 3.0 + 0.0 + 2.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
     0.0_f64;
-  let result: f64 = v0.distance(v1, Metric::Manhattan);
+  let result: f64 = Metric::Manhattan.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -89,6 +89,6 @@ fn manhattan_noexact_noexact_is_equal() {
     2.0 + 3.0 + 0.0 + 2.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
     0.0_f64;
-  let result: f64 = v0.distance(v1, Metric::Manhattan);
+  let result: f64 = Metric::Manhattan.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }

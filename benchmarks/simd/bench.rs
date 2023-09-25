@@ -1,10 +1,10 @@
 #![feature(test)]
 
 extern crate test;
-extern crate utils_benchmarks;
+extern crate benchmarks_utils;
 
 use test::Bencher;
-use utils_benchmarks::*;
+use benchmarks_utils::*;
 
 #[bench]
 fn simd(bencher: &mut Bencher) {

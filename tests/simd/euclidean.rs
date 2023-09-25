@@ -20,7 +20,7 @@ fn euclidean_exact_exact() {
     4.0 + 9.0 + 0.0 + 4.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
     0.0 + 9.0 + 0.0 + 9.0_f64;
-  let result: f64 = v0.distance(v1, Metric::Euclidean);
+  let result: f64 = Metric::Euclidean.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -43,7 +43,7 @@ fn euclidean_exact_noexact() {
     4.0 + 9.0 + 0.0 + 4.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
     0.0_f64;
-  let result: f64 = v0.distance(v1, Metric::Euclidean);
+  let result: f64 = Metric::Euclidean.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -66,7 +66,7 @@ fn euclidean_noexact_noexact_not_equal() {
     4.0 + 9.0 + 0.0 + 4.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
     0.0_f64;
-  let result: f64 = v0.distance(v1, Metric::Euclidean);
+  let result: f64 = Metric::Euclidean.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }
 
@@ -89,6 +89,6 @@ fn euclidean_noexact_noexact_is_equal() {
     4.0 + 9.0 + 0.0 + 4.0 +
     1.0 + 0.0 + 1.0 + 0.0 +
     0.0_f64;
-  let result: f64 = v0.distance(v1, Metric::Euclidean);
+  let result: f64 = Metric::Euclidean.measure::<f64>(v0, v1);
   assert_eq!(result, expectation);
 }

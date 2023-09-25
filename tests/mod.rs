@@ -4,5 +4,3 @@ mod metric;
 
 #[cfg(feature = "simd")]
 mod simd;
-
-mod vector;

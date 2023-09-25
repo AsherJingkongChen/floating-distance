@@ -4,7 +4,6 @@ use rand::{prelude::*, distributions::*};
 pub fn cosine_similarity() {
   let count = 100;
   let mut rng = thread_rng();
-  rng.fill_bytes(&mut [0]);
   // let dist = Uniform::new_inclusive(-1.0_f32, 1.0_f32);
   let dist = Bernoulli::new(0.9).unwrap();
 
@@ -24,7 +23,9 @@ pub fn cosine_similarity() {
   for i in 0..count {
     for j in i..count {
       if i == j { continue; }
-      let distance = vectors[i].distance(&vectors[j], Metric::Cosine);
+      let distance = Metric::Cosine.measure::<f32>(
+        &vectors[i], &vectors[j]
+      );
 
       // find the one closest to 1.0
       if result.0 < distance {
