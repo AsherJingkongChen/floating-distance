@@ -4,7 +4,7 @@ pub fn manhattan_distance() {
   let v0: &[f32; 4] = &[1.0, -2.0, -3.5, 99.0];
   let v1: &[f32; 3] = &[-3.0, -5.0, -5.3];
 
-  let result = v0.distance(v1, Metric::Manhattan);
+  let result = Metric::Manhattan.measure::<f32>(v0, v1);
   let expectation = 4.0 + 3.0 + 1.8;
 
   assert_eq!(result, expectation);

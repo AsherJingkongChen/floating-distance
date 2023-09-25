@@ -1,6 +1,6 @@
 [package]
-name = "utils-benchmarks"
-version = "0.2.0"
+name = "benchmarks-utils"
+version = "0.3.0"
 
 [dependencies]
 floating-distance = { path = "../../" }

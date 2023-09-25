@@ -3,33 +3,29 @@
 #![warn(missing_docs)]
 
 #![cfg_attr(feature = "simd",
+  allow(incomplete_features),
   feature(
     generic_const_exprs,
-    iter_array_chunks,
     portable_simd,
   ),
-  allow(incomplete_features)
 )]
 #![cfg_attr(docsrs,
   feature(doc_cfg)
 )]
 
-/// It contains the definitions and implementations
-/// of distance algorithms
+/// Provide distance functions and compare functions
 pub mod metric;
 pub use metric::*;
 
-/// The floating-point numeric types
+/// Floating-point numeric types
 pub mod numeric;
 pub use numeric::*;
 
-/// Requires to specify `features = ["simd"]` in `Cargo.toml`
-/// and compile with Rust nightly version
-mod simd;
+/// Utilities for `simd` feature
 #[cfg_attr(docsrs, doc(cfg(feature = "simd")))]
+pub mod simd;
 pub use simd::*;
 
-/// The vector types
+/// Vector type
 pub mod vector;
 pub use vector::*;
-

@@ -15,5 +15,5 @@ pub trait FloatingPoints<T>:
 impl FloatingPoint for f32 {}
 impl FloatingPoint for f64 {}
 
-impl FloatingPoints<f32> for AutoSimd!(f32) {}
-impl FloatingPoints<f64> for AutoSimd!(f64) {}
+impl FloatingPoints<f32> for AutoSimd<f32> {}
+impl FloatingPoints<f64> for AutoSimd<f64> {}

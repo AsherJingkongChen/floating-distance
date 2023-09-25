@@ -1,6 +1,6 @@
 [package]
 name = "floating-distance"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Asher Jingkong Chen"]
 categories = ["algorithms", "mathematics"]
 description = "Measure distance between floating-point vectors in Rust"
@@ -33,5 +33,4 @@ doctest = false
 [workspace]
 members = [
   "benchmarks/**/*",
-  "utils/**/*",
 ]
