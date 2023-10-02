@@ -33,35 +33,51 @@ jobs:
       run: cargo +1.60.0 check
 
     - name: Check compilation (--features=simd)
-      run: cargo +nightly -Zgitoxide check --features=simd
+      run: >
+        cargo +nightly -Zgitoxide check
+        --features=simd
 
     - name: Check compilation (--examples=default)
-      run: cargo +1.60.0 check --example=default
+      run: >
+        cargo +1.60.0 check
+        --example=default
 
     - name: Check compilation (--package=benchmarks-no-simd)
-      run: cargo +nightly -Zgitoxide check --package=benchmarks-no-simd
+      run: >
+        cargo +nightly -Zgitoxide check
+        --package=benchmarks-no-simd
 
     - name: Check compilation (--package=benchmarks-simd)
-      run: cargo +nightly -Zgitoxide check --package=benchmarks-simd
+      run: >
+        cargo +nightly -Zgitoxide check
+        --package=benchmarks-simd
 
     - name: Run doc-tests
-      run: cargo +nightly -Zgitoxide test --doc
+      run: >
+        cargo +nightly -Zgitoxide test
+        --doc
 
     - name: Run doc-tests (--features=simd)
-      run: cargo +nightly -Zgitoxide test --doc --features=simd
+      run: >
+        cargo +nightly -Zgitoxide test
+        --doc --features=simd
 
     - name: Run tests
-      run: cargo +1.60.0 llvm-cov --lcov --output-path llvm-cov-default.info
+      run: >
+        cargo +1.60.0 llvm-cov
+        --lcov --output-path=target/llvm-cov-default.info
 
     - name: Run tests (--features=simd)
-      run: cargo +nightly -Zgitoxide llvm-cov --features=simd --lcov --output-path llvm-cov-simd.info
+      run: >
+        cargo +nightly -Zgitoxide llvm-cov
+        --features=simd --lcov --output-path=target/llvm-cov-simd.info
 
     - name: Upload all coverage reports to Codecov
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: >
-          llvm-cov-default.info,
-          llvm-cov-simd.info
+          target/llvm-cov-default.info,
+          target/llvm-cov-simd.info
         fail_ci_if_error: true
         verbose: true
