@@ -34,12 +34,12 @@ fn main() {
 ```
 
 ## feature = ["simd"]
-### What's special?
+### What's special about SIMD?
 SIMD is the acronym for **S**ingle **I**nstruction **M**ultiple **D**ata
 
 Modern CPUs have special instructions. We can use them to accelerate vector computations!
 
-### How to start?
+### How to enable SIMD?
 You can enable `simd` feature in this crate by the following steps:
 1. Specify `features = ["simd"]` in `Cargo.toml` manifest:
 ```ini
@@ -51,7 +51,7 @@ floating-distance = { version = "*", features = ["simd"] }
 [toolchain]
 channel = "nightly"
 ```
-3. Choose the SIMD instruction sets which are supported by the target architecture. You can use `RUSTFLAGS` environment variable and `-C target-feature` compiler option like these:
+3. **(Optional)** Choose the SIMD instruction sets which are supported by the target architecture. You can use `RUSTFLAGS` environment variable and `-C target-feature` compiler option like these:
 ```shell
 RUSTFLAGS="-C target-feature=+ssse3" cargo build
 ```
@@ -62,35 +62,24 @@ You can find all target features of Rust by this:
 ```shell
 rustc --print target-features
 ```
-The table shows how this library interprets target features:
 
-Unit width | Target features
---- | ---
-128-bits | `sse`, `sse2`, `sse3`, `sse4.1`, `sse4.2`, `sse4a`, `ssse3`
-256-bits | `avx`, `avx2`
-512-bits | `avx512vl`
+### How powerful is SIMD?
+I have run a simple benchmark on my laptop (architecture: `aarch64-apple-darwin`).
+The SIMD instruction set is NEON.
 
-### How great is it?
-I have run a simple benchmark on my laptop.
 Let's check out the results first!
 
-- SIMD 256-bits vs No SIMD, uses `RUSTFLAGS="-C target-feature=+avx"`:
+- SIMD vs No SIMD (single-precision floating-point type):
 ```log
-no_simd: 265,312 ns/iter (+/- 65,921)
-simd:    37,681  ns/iter (+/- 11,822)
+no_simd: 198,306 ns/iter (+/- 5,173)
+simd:    18,430 ns/iter (+/- 655)
 ```
-- SIMD 128-bits vs No SIMD, uses `RUSTFLAGS="-C target-feature=+ssse3"`:
-```log
-no_simd: 267,294 ns/iter (+/- 70,412)
-simd:    67,950  ns/iter (+/- 11,427)
-```
-Unit type | Avarage time (ns/iter) | Rate (relative)
+Type | Avarage time (ns/iter) | Rate (relative)
 --- | --- | ---
-Packed 256-bits | 37681 | 7.07
-Packed 128-bits | 67950 | 3.92
-Scalar 32-bits | 266303 | 1.00
+No SIMD | 198306 | 1.00
+SIMD | 18430 | 10.76
 
-With the data above, we can see that SIMD can improve the performance by roughly `Unit width / Scalar width` times!
+As the data shown, we can see that SIMD can improve the performance significantly!
 
 You can also benchmark it by repeating the following steps:
 1. Clone the repository and change it to the current directory
@@ -101,6 +90,6 @@ You can also benchmark it by repeating the following steps:
  cargo +nightly bench -p benchmarks-simd) 2> /dev/null
 ```
 
-### Feature note
-1. This feature is built by experimental features of Rust
+### Note for SIMD feature
+1. This feature is built by experimental features of Rust standard library, `portable-simd`.
 2. If a program is built with target features which are not supported by the target architecture, it may lead to runtime errors.

@@ -8,6 +8,7 @@ use cfg_if::cfg_if;
 /// use std::mem::size_of;
 /// 
 /// const LANES: usize = auto_lane_count!(f32);
+/// assert_eq!(LANES, 16);
 /// assert!(LANES / size_of::<f32>() >= 1);
 /// assert!(LANES % size_of::<f32>() == 0);
 /// ```
@@ -20,35 +21,7 @@ macro_rules! auto_lane_count {
   ($scalar: ty) => {{
     cfg_if::cfg_if! {
     if #[cfg(feature = "simd")] {
-      cfg_if::cfg_if! {
-      if #[cfg(any(
-        target_feature = "avx512vl",
-      ))] {
-        512 / 8 / std::mem::size_of::<$scalar>()
-      } else if #[cfg(any(
-        target_feature = "avx",
-        target_feature = "avx2",
-      ))] {
-        256 / 8 / std::mem::size_of::<$scalar>()
-      } else if #[cfg(any(
-        target_feature = "sse",
-        target_feature = "sse2",
-        target_feature = "sse3",
-        target_feature = "sse4.1",
-        target_feature = "sse4.2",
-        target_feature = "sse4a",
-        target_feature = "ssse3",
-      ))] {
-        128 / 8 / std::mem::size_of::<$scalar>()
-      } else {
-        compile_error!("\
-  The target architecture does not support SIMD. \
-  You can check out the documentation of \
-  the floating-distance crate for more information.");
-        std::mem::size_of::<$scalar>() /
-        std::mem::size_of::<$scalar>()
-      }
-      }
+      512 / 8 / std::mem::size_of::<$scalar>()
     } else {
       1
     }
