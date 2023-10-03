@@ -7,8 +7,8 @@ pub trait FloatingPoint:
   AutoSimdElement + Default + Float {}
 
 /// The floating-point packed type
-pub trait FloatingPoints<T>:
-  AutoSimdFloat<Scalar = T> + Default +
+pub trait FloatingPoints<S>:
+  AutoSimdFloat<Scalar = S> + Default +
   Add<Output = Self> + Mul<Output = Self> +
   Sub<Output = Self> {}
 
