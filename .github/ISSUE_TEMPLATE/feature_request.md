@@ -6,6 +6,8 @@ labels: enhancement
 assignees: ''
 
 ---
+## Version
+0.42.x
 
 ## Add a new feature
 ```rust

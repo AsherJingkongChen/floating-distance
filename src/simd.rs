@@ -51,7 +51,7 @@ if #[cfg(feature = "simd")] {
   pub trait AutoSupportedLaneCount: SupportedLaneCount {}
 
   impl<S: SimdElement> AutoSimdElement for S {}
-  impl<S: SimdFloat> AutoSimdFloat for S {}
+  impl<P: SimdFloat> AutoSimdFloat for P {}
   impl<S: SupportedLaneCount> AutoSupportedLaneCount for S {}
 
 } else {
