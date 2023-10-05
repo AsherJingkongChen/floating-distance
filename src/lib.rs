@@ -1,4 +1,3 @@
-#![allow(non_snake_case)]
 #![doc = include_str!("../README.md")]
 #![warn(missing_docs)]
 
